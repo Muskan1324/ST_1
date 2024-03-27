@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+   }
+    body{
+    height:100vh;
+    display: flex;
+    background-color: rgb(210, 209, 209);
+    align-items: center;
+    justify-content: center;
+   }
+
+    form {
+    background-color: rgb(238, 238, 250);
+    width: 300px;
+    margin: 0 auto;
+    padding:20px;
+    border:1px solid black;
+    border-radius:5px;
+    margin-bottom: 5px;
+        }
+
+  
+
+    input {
+     width: 100%;
+    padding:8px;
+    font-size: 10px;
+    border:1px solid black;
+    border-radius:3px;
+        }
+
+        button {
+        display: flex;
+       margin-left: 25%;
+          width: 50%;
+         padding: 5px;
+           background-color: rgb(47, 37, 80);
+          color: white;
+          font-size: 15px;
+           border-radius: 15px;
+           cursor: pointer;
+           margin-top: 7px;
+           margin-bottom: 5px;
+           justify-content: center;
+        }
+
+        button:hover {
+            background-color: rgb(105, 106, 106);
+        }
+        h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 5px;
+    text-decoration: underline;
+
+        }
+
+    </style>
+</head>
+<body>
+    <form>
+        <h2>Email Verification</h2>
+    <input type="email" id="email" placeholder="Enter Email">
+    <button id="sendOTP">Send OTP</button>
+    <input type="text" id="otp" placeholder="Enter OTP">
+    <button id="verifyOTP">Verify OTP</button>
+    </form>
+
+    <script>
+        document.getElementById('sendOTP').addEventListener('click', async () => {                                   //This sets up an event listener for the click event on the element with the ID sendOTP.
+    const email = document.getElementById('email').value;                                                             // Retrieves the value of the input field with the ID email, presumably containing the email address. 
+    const response = await fetch('/sendOTP', {                                                                        //Sends a POST request to the /sendOTP endpoint on the server. It includes the email address as JSON data in the request body.
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'                                                                                       //This header indicates to the server that the content being sent in the request body is in JSON format.
+        },
+        body: JSON.stringify({ email })                                                                                    //convert javascript object into string 
+    });
+    const data = await response.json();                                                                                     //Parses the JSON response from the server.
+    alert(data.message);                                                                                                  //Alerts the message received from the server.
+});
+//This code suggests that upon clicking a button to send an OTP, the client-side JavaScript sends an email address to a server-side endpoint. The server likely processes this request, generates an OTP, and sends a response back with a message indicating the status of the operation. The alert then displays this message to the user.
+
+document.getElementById('verifyOTP').addEventListener('click', async () => {
+    const otp = document.getElementById('otp').value;
+    const response = await fetch('/verifyOTP', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ otp })
+    });
+    const data = await response.json();
+    alert(data.message);
+});
+    </script>
+</body>
+</html>
